@@ -137,67 +137,73 @@ export function AppShell({ children }: PropsWithChildren) {
         {/* Main */}
         <main className="flex-1 flex flex-col min-w-0">
           {/* Topbar */}
-          <header className="mx-4 sm:mx-6 mt-4 sm:mt-6 flex items-center justify-between gap-4">
-            {/* Left */}
-            <div className="flex items-center gap-3 flex-1 min-w-0">
-              <button
-                className="icon-btn lg:hidden"
-                onClick={() => setSidebarOpen(true)}
-                aria-label="Open menu"
-                title="Menu"
-              >
-                <Menu size={18} />
-              </button>
+<header className="mx-4 sm:mx-6 mt-4 sm:mt-6 relative flex items-center gap-4">
+  {/* LEFT */}
+  <div className="flex items-center gap-3 flex-1 min-w-0">
+    <button
+      className="icon-btn lg:hidden"
+      onClick={() => setSidebarOpen(true)}
+      aria-label="Open menu"
+      title="Menu"
+    >
+      <Menu size={18} />
+    </button>
 
-              <div className="flex-1 min-w-0">
-                <div className="search-pill w-full max-w-2xl">
-                  <Search size={18} className="opacity-70" />
-                  <input placeholder="Search" className="w-full" />
-                </div>
-              </div>
-            </div>
+    <div className="flex-1 min-w-0">
+      <div className="search-pill w-full max-w-2xl">
+        <Search size={18} className="opacity-70" />
+        <input placeholder="Search" className="w-full" />
+      </div>
+    </div>
+  </div>
 
-            {/* Right */}
-            <div className="flex items-center gap-2">
-              <button className="icon-btn" onClick={toggleTheme} title="Theme">
-                <Moon size={18} />
-              </button>
+  {/* CENTER (true centered, desktop only) */}
+  <div className="hidden lg:flex absolute left-1/2 -translate-x-1/2 items-center gap-2">
+    <button className="icon-btn" onClick={toggleTheme} title="Theme">
+      <Moon size={18} />
+    </button>
 
-              <button className="icon-btn hidden sm:inline-flex" title="Calendar">
-                <CalendarDays size={18} />
-              </button>
+    <button className="icon-btn" title="Calendar">
+      <CalendarDays size={18} />
+    </button>
 
-              <button className="icon-btn hidden sm:inline-flex" title="Messages">
-                <MessageCircle size={18} />
-              </button>
+    <button className="icon-btn" title="Messages">
+      <MessageCircle size={18} />
+    </button>
 
-              <button className="icon-btn hidden md:inline-flex" title="New">
-                <Plus size={18} />
-              </button>
+    <button className="icon-btn" title="New">
+      <Plus size={18} />
+    </button>
 
-              <button
-                className="icon-btn relative hidden sm:inline-flex"
-                title="Notifications"
-              >
-                <Bell size={18} />
-                <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-red-500" />
-              </button>
+    <button className="icon-btn relative" title="Notifications">
+      <Bell size={18} />
+      <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-red-500" />
+    </button>
 
-              <button className="icon-btn hidden md:inline-flex" title="Language">
-                <Globe size={18} />
-              </button>
+    <button className="icon-btn" title="Language">
+      <Globe size={18} />
+    </button>
+  </div>
 
-              <div className="ml-2 flex items-center gap-3 rounded-full border border-border bg-surface px-3 py-2 dark:border-borderDark dark:bg-surfaceDark">
-                <div className="h-8 w-8 rounded-full bg-black/10 dark:bg-white/10" />
-                <div className="leading-tight hidden sm:block">
-                  <div className="text-sm font-semibold">UI Engineer</div>
-                  <div className="text-xs text-muted dark:text-mutedDark">
-                    you@email.com
-                  </div>
-                </div>
-              </div>
-            </div>
-          </header>
+  {/* RIGHT */}
+  <div className="flex items-center justify-end gap-2 flex-1">
+    {/* Optional: keep ONE icon on mobile if you want */}
+    <button className="icon-btn lg:hidden" onClick={toggleTheme} title="Theme">
+      <Moon size={18} />
+    </button>
+
+    <div className="ml-2 flex items-center gap-3 rounded-full border border-border bg-surface px-3 py-2 dark:border-borderDark dark:bg-surfaceDark">
+      <div className="h-8 w-8 rounded-full bg-black/10 dark:bg-white/10" />
+      <div className="leading-tight hidden sm:block">
+        <div className="text-sm font-semibold">UI Engineer</div>
+        <div className="text-xs text-muted dark:text-mutedDark">
+          you@email.com
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
 
           {/* Page content */}
           <div className="flex-1 px-4 sm:px-6 py-4 sm:py-6 overflow-auto bg-app dark:bg-appDark">

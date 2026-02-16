@@ -2,11 +2,78 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body, #root {
-  height: 100%;
+@layer base {
+  body {
+    @apply font-sans bg-app text-text dark:bg-appDark dark:text-textDark;
+  }
+
+  /* Paragraphs muted by default */
+  p {
+    @apply text-muted dark:text-mutedDark;
+  }
+
+  .dark .bg-white {
+    background-color: rgb(22 26 34) !important; /* surfaceDark */
+  }
+  .dark .text-black {
+    color: rgb(232 237 245) !important; /* textDark-ish */
+  }
 }
 
-body {
-  background: #f3f5f9;
-  color: #111827;
+
+
+@layer components {
+  /* Topbar + icon buttons */
+  .icon-btn {
+    @apply h-10 w-10 grid place-items-center rounded-xl border
+      border-border bg-surface text-text shadow-sm
+      hover:bg-app active:translate-y-[1px] transition
+      dark:border-borderDark dark:bg-surfaceDark dark:text-textDark dark:hover:bg-white/10;
+  }
+
+  .topbar {
+    @apply h-14 flex items-center justify-between gap-3 px-4 rounded-2xl border
+      border-border bg-surface shadow-sm
+      dark:border-borderDark dark:bg-surfaceDark;
+  }
+
+  .dark .topbar {
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+  }
+
+  .search-pill {
+    @apply flex items-center gap-2 px-4 h-11 rounded-full border
+      border-border bg-app text-text
+      dark:border-borderDark dark:bg-white/10 dark:text-textDark;
+  }
+
+  .search-pill input {
+    @apply bg-transparent outline-none w-full text-sm
+      placeholder:text-muted dark:placeholder:text-mutedDark;
+  }
+
+  /* Chips / badges for table cells */
+  .chip {
+    @apply inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium
+      border-border bg-app text-text
+      dark:border-white/10 dark:bg-white/5 dark:text-textDark;
+  }
+
+  .status-active {
+    @apply inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold
+      bg-emerald-50 text-emerald-700 border border-emerald-200
+      dark:bg-emerald-500/10 dark:text-emerald-200 dark:border-emerald-500/20;
+  }
+
+  .status-pending {
+    @apply inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold
+      bg-amber-50 text-amber-700 border border-amber-200
+      dark:bg-amber-500/10 dark:text-amber-200 dark:border-amber-500/20;
+  }
+
+  .status-paused {
+    @apply inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold
+      bg-rose-50 text-rose-700 border border-rose-200
+      dark:bg-rose-500/10 dark:text-rose-200 dark:border-rose-500/20;
+  }
 }

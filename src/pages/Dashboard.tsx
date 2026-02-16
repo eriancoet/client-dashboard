@@ -12,7 +12,7 @@ export function Dashboard() {
     <div className="space-y-8">
       <div>
         <h1 className="text-3xl font-semibold tracking-tight">Dashboard</h1>
-        <p className="text-sm text-muted mt-2">
+        <p className="text-sm text-muted dark:text-mutedDark mt-2">
           Overview of client activity and performance
         </p>
       </div>
@@ -20,9 +20,9 @@ export function Dashboard() {
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
         {kpis.map((k) => (
           <Card key={k.label} className="p-6">
-            <div className="text-xs text-muted">{k.label}</div>
+            <div className="text-xs text-muted dark:text-mutedDark">{k.label}</div>
             <div className="mt-2 text-3xl font-semibold">{k.value}</div>
-            <div className="mt-2 text-xs text-muted">{k.sub}</div>
+            <div className="mt-2 text-xs text-muted dark:text-mutedDark">{k.sub}</div>
           </Card>
         ))}
       </div>
@@ -30,7 +30,7 @@ export function Dashboard() {
       <Card className="p-6">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold">Recent Activity</h2>
-          <button className="text-sm text-muted hover:text-text">
+          <button className="text-sm text-muted dark:text-mutedDark hover:text-text dark:hover:text-textDark">
             View all
           </button>
         </div>
@@ -42,8 +42,8 @@ export function Dashboard() {
             ["Atlas task marked complete", "Yesterday"]
           ].map(([label, time]) => (
             <div key={label} className="flex items-center justify-between">
-              <span className="text-text">{label}</span>
-              <span className="text-muted">{time}</span>
+              <span>{label}</span>
+              <span className="text-muted dark:text-mutedDark">{time}</span>
             </div>
           ))}
         </div>

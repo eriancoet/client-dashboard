@@ -1,9 +1,10 @@
+import type { ReactNode } from "react";
 import { useEffect, useMemo, useState } from "react";
 
 export type Column<T> = {
   key: string;
   header: string;
-  render: (row: T) => React.ReactNode;
+  render: (row: T) => ReactNode;
   sortValue?: (row: T) => string | number;
   className?: string;
 };
@@ -32,6 +33,7 @@ export function DataTable<T>({
 
   const sorted = useMemo(() => {
     if (!sort) return rows;
+
     const col = columns.find((c) => c.key === sort.key);
     if (!col?.sortValue) return rows;
 
@@ -68,19 +70,24 @@ export function DataTable<T>({
 
   if (rows.length === 0) {
     return (
-      <div className="rounded-2xl border border-border bg-white p-10 text-center shadow-sm">
-        <div className="text-base font-semibold text-text">{emptyTitle}</div>
-        <div className="mt-2 text-sm text-muted">{emptyDescription}</div>
+      <div className="rounded-2xl border border-border bg-surface p-10 text-center shadow-sm dark:border-white/5 dark:bg-surfaceDark dark:shadow-[0_20px_60px_rgba(0,0,0,0.45)] dark:ring-1 dark:ring-white/5">
+        <div className="text-base font-semibold text-text dark:text-textDark">
+          {emptyTitle}
+        </div>
+        <div className="mt-2 text-sm text-muted dark:text-mutedDark">
+          {emptyDescription}
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-border bg-white shadow-sm">
+    <div className="overflow-hidden rounded-2xl border border-border bg-surface shadow-sm dark:border-white/5 dark:bg-surfaceDark dark:shadow-[0_20px_60px_rgba(0,0,0,0.45)] dark:ring-1 dark:ring-white/5">
       <div className="overflow-x-auto">
-        <table className="w-full text-sm">
-          <thead className="bg-gray-50 text-xs uppercase tracking-wide text-muted">
-            <tr className="border-b border-border">
+        <table className="w-full text-sm text-text dark:text-textDark">
+          {/* Header */}
+          <thead className="bg-app/60 text-xs text-muted dark:bg-white/5 dark:text-mutedDark">
+            <tr className="border-b border-border dark:border-white/5">
               {columns.map((c) => {
                 const isSorted = sort?.key === c.key;
                 const canSort = !!c.sortValue;
@@ -89,16 +96,18 @@ export function DataTable<T>({
                   <th
                     key={c.key}
                     className={[
-                      "py-3.5 px-4 text-left font-semibold select-none whitespace-nowrap",
-                      canSort ? "cursor-pointer hover:text-text" : "",
+                      "py-3 px-4 text-left font-semibold select-none whitespace-nowrap",
+                      canSort
+                        ? "cursor-pointer hover:text-text dark:hover:text-textDark"
+                        : "",
                       c.className || ""
                     ].join(" ")}
                     onClick={canSort ? () => toggleSort(c.key) : undefined}
                   >
                     <div className="flex items-center gap-2">
-                      {c.header}
+                      <span>{c.header}</span>
                       {isSorted && (
-                        <span className="text-[11px] text-muted">
+                        <span className="text-[11px] text-muted dark:text-mutedDark">
                           {sort?.dir === "asc" ? "▲" : "▼"}
                         </span>
                       )}
@@ -109,19 +118,21 @@ export function DataTable<T>({
             </tr>
           </thead>
 
+          {/* Rows */}
           <tbody>
             {paged.map((row, idx) => (
               <tr
                 key={idx}
                 className={[
                   "border-b border-border last:border-b-0",
-                  "hover:bg-gray-50 transition-colors",
+                  "hover:bg-black/[0.02] transition-colors",
+                  "dark:border-white/5 dark:hover:bg-white/5",
                   onRowClick ? "cursor-pointer" : ""
                 ].join(" ")}
                 onClick={() => onRowClick?.(row)}
               >
                 {columns.map((c) => (
-                  <td key={c.key} className="py-3.5 px-4 align-middle text-text">
+                  <td key={c.key} className="py-3.5 px-4 align-middle">
                     {c.render(row)}
                   </td>
                 ))}
@@ -131,23 +142,29 @@ export function DataTable<T>({
         </table>
       </div>
 
-      {/* Pagination */}
-      <div className="flex items-center justify-between gap-3 px-4 py-3 bg-white border-t border-border">
-        <div className="text-xs text-muted">
-          Page <span className="text-text font-medium">{page}</span> of{" "}
-          <span className="text-text font-medium">{totalPages}</span>
+      {/* Footer / Pagination */}
+      <div className="flex items-center justify-between gap-3 px-4 py-3 bg-surface border-t border-border dark:bg-surfaceDark dark:border-white/5">
+        <div className="text-xs text-muted dark:text-mutedDark">
+          Page{" "}
+          <span className="text-text font-medium dark:text-textDark">
+            {page}
+          </span>{" "}
+          of{" "}
+          <span className="text-text font-medium dark:text-textDark">
+            {totalPages}
+          </span>
         </div>
 
         <div className="flex gap-2">
           <button
-            className="px-3 py-2 rounded-lg border border-border bg-white text-sm hover:bg-gray-50 disabled:opacity-50"
+            className="px-3 py-2 rounded-xl border border-border bg-surface text-sm hover:bg-black/[0.03] disabled:opacity-50 transition dark:border-white/5 dark:bg-surfaceDark dark:hover:bg-white/5"
             disabled={page === 1}
             onClick={() => setPage((p) => Math.max(1, p - 1))}
           >
             Prev
           </button>
           <button
-            className="px-3 py-2 rounded-lg border border-border bg-white text-sm hover:bg-gray-50 disabled:opacity-50"
+            className="px-3 py-2 rounded-xl border border-border bg-surface text-sm hover:bg-black/[0.03] disabled:opacity-50 transition dark:border-white/5 dark:bg-surfaceDark dark:hover:bg-white/5"
             disabled={page === totalPages}
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
           >

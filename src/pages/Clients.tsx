@@ -2,15 +2,14 @@ import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { clients } from "../data/mock";
 import { Card } from "../components/ui/Card";
-import { Badge } from "../components/ui/Badge";
 import { DataTable } from "../components/ui/DataTable";
 import type { Column } from "../components/ui/DataTable";
 import type { Client } from "../types";
 
-function statusVariant(s: Client["status"]) {
-  if (s === "Active") return "success";
-  if (s === "Pending") return "warning";
-  return "danger";
+function statusClass(s: Client["status"]) {
+  if (s === "Active") return "status-active";
+  if (s === "Pending") return "status-pending";
+  return "status-paused";
 }
 
 export function Clients() {
@@ -33,10 +32,12 @@ export function Clients() {
       header: "Client",
       render: (c) => (
         <div className="flex items-center gap-3">
-          <div className="h-9 w-9 rounded-full bg-white/10" />
+          <div className="h-9 w-9 rounded-full bg-black/10 dark:bg-white/10" />
           <div>
             <div className="font-medium">{c.name}</div>
-            <div className="text-xs text-muted">{c.category}</div>
+            <div className="text-xs text-muted dark:text-mutedDark">
+              {c.category}
+            </div>
           </div>
         </div>
       ),
@@ -45,7 +46,7 @@ export function Clients() {
     {
       key: "status",
       header: "Status",
-      render: (c) => <Badge variant={statusVariant(c.status) as any}>{c.status}</Badge>,
+      render: (c) => <span className={statusClass(c.status)}>{c.status}</span>,
       sortValue: (c) => c.status
     },
     {
@@ -54,7 +55,9 @@ export function Clients() {
       render: (c) => (
         <div className="flex gap-2 flex-wrap">
           {c.tags.slice(0, 2).map((t) => (
-            <Badge key={t}>{t}</Badge>
+            <span key={t} className="chip">
+              {t}
+            </span>
           ))}
         </div>
       )
@@ -62,7 +65,9 @@ export function Clients() {
     {
       key: "createdAt",
       header: "Created",
-      render: (c) => <span className="text-muted">{c.createdAt}</span>,
+      render: (c) => (
+        <span className="text-muted dark:text-mutedDark">{c.createdAt}</span>
+      ),
       sortValue: (c) => c.createdAt
     }
   ];
@@ -71,7 +76,9 @@ export function Clients() {
     <div className="space-y-5">
       <div>
         <div className="text-xl font-semibold">Clients</div>
-        <div className="text-xs text-muted mt-1">Search, sort, and open client details</div>
+        <div className="text-xs text-muted dark:text-mutedDark mt-1">
+          Search, sort, and open client details
+        </div>
       </div>
 
       <Card className="p-4">
@@ -79,7 +86,13 @@ export function Clients() {
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder="Search clients..."
-          className="w-full rounded-xl border border-border bg-surface/60 px-4 py-2 text-sm text-text placeholder:text-muted outline-none focus:ring-2 focus:ring-accent/30"
+          className={[
+            "w-full rounded-xl border px-4 py-2 text-sm outline-none transition",
+            "border-border bg-surface/60 text-text placeholder:text-muted",
+            "focus:ring-2 focus:ring-black/10",
+            "dark:border-white/5 dark:bg-white/5 dark:text-textDark dark:placeholder:text-mutedDark",
+            "dark:focus:ring-white/10"
+          ].join(" ")}
         />
       </Card>
 
